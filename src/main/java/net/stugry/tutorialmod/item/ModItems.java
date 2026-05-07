@@ -19,6 +19,13 @@ public class ModItems {
                             ResourceLocation.fromNamespaceAndPath(TutorialMod.MOD_ID, "bismuth")
                     )
             )));
+    public static final DeferredItem<Item> RAW_BISMUTH = ITEMS.register("raw_bismuth",
+            () -> new Item(new Item.Properties().setId(
+                    ResourceKey.create(
+                            Registries.ITEM,
+                            ResourceLocation.fromNamespaceAndPath(TutorialMod.MOD_ID, "raw_bismuth")
+                    )
+            )));
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

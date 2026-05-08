@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BBB",
+    "BBB"
+  ],
+  "key": {
+  "B": {
+    "item": "tutorialmod:bismuth"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "tutorialmod:bismuth_block"
+  }
+}

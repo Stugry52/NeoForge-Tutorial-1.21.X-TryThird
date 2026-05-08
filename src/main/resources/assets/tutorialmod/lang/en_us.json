@@ -5,5 +5,8 @@
   "item.tutorialmod.bismuth_block": "Block of Bismuth",
   "block.tutorialmod.bismuth_block": "Block of Bismuth",
   "item.tutorialmod.bismuth_ore": "Bismuth Ore",
-  "block.tutorialmod.bismuth_ore": "Bismuth Ore"
+  "block.tutorialmod.bismuth_ore": "Bismuth Ore",
+
+  "creativetab.tutorialmod.bismuth_items": "Bismuth Items",
+  "creativetab.tutorialmod.bismuth_blocks": "Bismuth Blocks"
 }

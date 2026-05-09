@@ -1,5 +1,9 @@
 package net.stugry.tutorialmod;
 
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.*;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.stugry.tutorialmod.block.ModBlocks;
 import net.stugry.tutorialmod.item.ModCreativeModeTabs;
 import net.stugry.tutorialmod.item.ModItems;
@@ -11,15 +15,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -83,5 +84,19 @@ public class TutorialMod {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
+    }
+    @SubscribeEvent
+    public void onVillagerTrades(VillagerTradesEvent event){
+        if (event.getType().equals(VillagerProfession.LIBRARIAN)){
+            event.getTrades().forEach((level, trades) ->{
+                trades.removeIf(trade ->{
+                    String className = trade.getClass().getSimpleName();
+
+                    System.out.println("Check trade: " + className);
+
+                    return className.contains("EnchantBookForEmerald");
+                });
+            });
+        }
     }
 }

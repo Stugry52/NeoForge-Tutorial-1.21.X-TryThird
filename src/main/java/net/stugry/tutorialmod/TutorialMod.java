@@ -1,9 +1,12 @@
 package net.stugry.tutorialmod;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.*;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
+import net.neoforged.neoforge.registries.*;
 import net.stugry.tutorialmod.block.ModBlocks;
 import net.stugry.tutorialmod.item.ModCreativeModeTabs;
 import net.stugry.tutorialmod.item.ModItems;
@@ -30,16 +33,16 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(TutorialMod.MOD_ID)
 public class TutorialMod {
     public static final String MOD_ID = "tutorialmod";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIER_SERIALIZERS =
+            DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, TutorialMod.MOD_ID);
+    public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<RemoveItemModifier>> REMOVE_ITEM =
+        LOOT_MODIFIER_SERIALIZERS.register("remove_item",() -> RemoveItemModifier.CODEC);
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -56,6 +59,8 @@ public class TutorialMod {
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+
+        LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -91,8 +96,6 @@ public class TutorialMod {
             event.getTrades().forEach((level, trades) ->{
                 trades.removeIf(trade ->{
                     String className = trade.getClass().getSimpleName();
-
-                    System.out.println("Check trade: " + className);
 
                     return className.contains("EnchantBookForEmerald");
                 });
